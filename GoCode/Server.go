@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -8,8 +10,9 @@ import (
 	"os"
 	"strings"
 
-	"google.golang.org/api/googleapi/transport"
-	"google.golang.org/api/youtube/v3"
+	googleapi "google.golang.org/api/googleapi"
+	option "google.golang.org/api/option"
+	youtube "google.golang.org/api/youtube/v3"
 )
 
 func main() {
@@ -56,7 +59,6 @@ type CoverResponse struct {
 
 func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 	var gameName GameNameInput
-	defer req.Body.Close()
 	if req.Method == "POST" {
 		// Read the request
 		if err := json.NewDecoder(req.Body).Decode(&gameName); err != nil {
@@ -76,7 +78,10 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 		// Get the closest game with that name
 		r := strings.NewReader(fmt.Sprintf("search \"%s\"; fields name,cover,storyline; limit 1;", gameName.Name))
 		gamereq, _ := http.NewRequest("POST", "https://api.igdb.com/v4/games", r)
-		client := &http.Client{}
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+		client := &http.Client{Transport: tr}
 		gamereq.Header.Set("Client-ID", os.Getenv("twitchAPIID"))
 		gamereq.Header.Set("Authorization", fmt.Sprintf("Bearer %s", os.Getenv("twitchAPIAccess")))
 
@@ -85,6 +90,7 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 		if erro != nil {
 			log.Fatal(erro.Error())
 		}
+		defer gameresp.Body.Close()
 
 		var gamearray []GameArray
 		if err := json.NewDecoder(gameresp.Body).Decode(&gamearray); err != nil {
@@ -101,6 +107,8 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 		if erro != nil {
 			log.Fatal(erro.Error())
 		}
+		defer coverresp.Body.Close()
+
 		var cover []CoverResponse
 		if err := json.NewDecoder(coverresp.Body).Decode(&cover); err != nil {
 			log.Fatal(err.Error())
@@ -108,11 +116,9 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 
 		// Get the first gameplay video with that name
 		developerKey := os.Getenv("youtubeAPIKey")
-		client = &http.Client{
-			Transport: &transport.APIKey{Key: developerKey},
-		}
 
-		service, err := youtube.New(client)
+		ctx := context.Background()
+		service, err := youtube.NewService(ctx, option.WithAPIKey(developerKey), option.WithHTTPClient(client))
 		if err != nil {
 			log.Fatalf("Error creating new YouTube client: %v", err)
 		}
@@ -122,7 +128,10 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 		call := service.Search.List(Test).
 			Q(fmt.Sprintf("%s gameplay", gamearray[0].Name)).
 			MaxResults(1)
-		ytresponse, err := call.Do()
+		ytresponse, err := call.Do(googleapi.QueryParameter("key", developerKey))
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 
 		// Send response
 		var response ResponseOutput
@@ -146,4 +155,5 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 			log.Fatal(err.Error())
 		}
 	}
+	defer req.Body.Close()
 }
