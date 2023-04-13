@@ -54,15 +54,18 @@ function handleResponse(response) {
     gameResponse = response;
     // Game Title
     document.getElementById('name').innerHTML = response.Name;
-                    
+    console.log("Name = " + response.Name)
+
     // Game Story
     document.getElementById('storyline').innerHTML = response.Storyline;
+    console.log("Storyline = " + response.Storyline)
 
     // Boxart
     let boxart_img = document.createElement("img");
     boxart_img.src = response.Boxart;
     let boxart = document.getElementById("boxart");
     boxart.append(boxart_img);
+    console.log("Cover url = " + response.Boxart)
 
     // Gameplay
     var tag = document.createElement('script');

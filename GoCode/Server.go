@@ -73,7 +73,7 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 			_ = json.NewEncoder(w).Encode(response)
 			log.Fatal(err.Error())
 		}
-		log.Println(gameName.Name)
+		log.Println("Requested Name = " + gameName.Name)
 
 		// Get the closest game with that name
 		r := strings.NewReader(fmt.Sprintf("search \"%s\"; fields name,cover,storyline; limit 1;", gameName.Name))
@@ -139,6 +139,10 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 		response.Name = gamearray[0].Name
 		response.Storyline = gamearray[0].Storyline
 		response.Boxart = cover[0].URL
+
+		log.Println("Found Name = " + gamearray[0].Name)
+		log.Println("Storyline = " + gamearray[0].Storyline)
+		log.Println("Cover URL = " + cover[0].URL)
 
 		for _, item := range ytresponse.Items {
 			switch item.Id.Kind {
