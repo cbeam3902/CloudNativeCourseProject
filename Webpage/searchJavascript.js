@@ -61,10 +61,11 @@ function handleResponse(response) {
     console.log("Storyline = " + response.Storyline)
 
     // Boxart
-    let boxart_img = document.createElement("img");
-    boxart_img.src = response.Boxart;
+    const boxartImage = new Image(350,365);
+    boxartImage.src = response.Boxart;
     let boxart = document.getElementById("boxart");
-    boxart.append(boxart_img);
+    boxart.append(boxartImage);
+
     console.log("Cover url = " + response.Boxart)
 
     // Gameplay
