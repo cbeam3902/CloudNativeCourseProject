@@ -78,11 +78,14 @@ function handleResponse(response) {
 }
 
 var player;
+const gameplayIDs = ['gameplay-1','gameplay-2','gameplay-3','gameplay-4','gameplay-5'];
 function onYouTubeIframeAPIReady() {
-    console.log(gameResponse.VideoId);
-    player = new YT.Player('gameplay', {
-        height: '390',
-        width: '640',
-        videoId: gameResponse.VideoId
-    });
+    for (let i = 0; i < gameplayIDs.length; i++){
+        console.log(gameResponse.VideoId);
+        player = new YT.Player(gameplayIDs[i], {
+            height: '350',
+            width: '365',
+            videoId: gameResponse.VideoId[i]
+        });
+    }
 }

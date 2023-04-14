@@ -42,7 +42,7 @@ type ResponseOutput struct {
 	Name      string
 	Storyline string
 	Boxart    string
-	VideoId   string
+	VideoId   []string
 }
 
 type GameArray struct {
@@ -66,7 +66,7 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 			var response ResponseOutput
 			response.Result = "nok"
 			response.Name = "void"
-			response.VideoId = "void"
+			response.VideoId = nil
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 			w.Header().Set("Content-Type", "application/json")
@@ -127,7 +127,7 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 		Test := []string{"id", "snippet"}
 		call := service.Search.List(Test).
 			Q(fmt.Sprintf("%s gameplay", gamearray[0].Name)).
-			MaxResults(1)
+			MaxResults(5)
 		ytresponse, err := call.Do(googleapi.QueryParameter("key", developerKey))
 		if err != nil {
 			log.Fatal(err.Error())
@@ -147,7 +147,7 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 		for _, item := range ytresponse.Items {
 			switch item.Id.Kind {
 			case "youtube#video":
-				response.VideoId = item.Id.VideoId
+				response.VideoId = append(response.VideoId, item.Id.VideoId)
 			}
 		}
 
