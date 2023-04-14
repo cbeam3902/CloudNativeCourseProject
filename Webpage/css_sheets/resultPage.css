@@ -88,8 +88,6 @@
     padding: 35px;
 }
 
-.center-text{
-    inline-size: min(100% - 4rem, 70rem);
-    margin-inline: auto;
-    text-align: center;
+.text-font{
+    font-size: 1.375em;
 }
