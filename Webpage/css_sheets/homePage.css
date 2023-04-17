@@ -50,11 +50,10 @@
 }
 
 .content input{
-    display: none;
     background: transparent;
     border: 0;
     outline: none;
-    padding: 0;
+    padding: 10px;
     font-size: 20px;
     color: #cac7ff
 }
