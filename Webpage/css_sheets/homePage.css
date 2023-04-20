@@ -26,9 +26,16 @@
 
 .content h1{
     font-size: 160px;
+    background: rgba(0, 0, 0, 0.3);
     color:#fc6c85;
     font-weight: 600;
     transition: 0.5s;
+    border: 2px solid #fc6c85;
+    padding: 10px 20px;
+    border-radius: 60px;
+    margin-top: 20px;
+    backdrop-filter: blur(4px) saturate(180%);
+
 }
 
 .content h1:hover{
@@ -39,7 +46,7 @@
 .content form{
     text-decoration: none;
     display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     font-size: 24px;
     border: 2px solid #fc6c85;
@@ -50,6 +57,7 @@
 }
 
 .content input{
+    display: inline;
     background: transparent;
     border: 0;
     outline: none;
@@ -78,7 +86,7 @@
 
 .back-video{
     position: absolute;
-    top: 47%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     min-width: 100%;
@@ -87,14 +95,31 @@
     
 }
 
-@media(min-aspect-ratio: 4/3){
+.color-change{
+    animation: coloranimation 14.5s infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes coloranimation{
+    0% {color: black;}
+    19%{color:black;}
+    20%{color:white;}
+    47%{color:white;}
+    48%{color:#fc6c85;}
+    75%{color:#fc6c85;}
+    76%{color:white;}
+    99%{color:white;}
+    100%{color: black;}
+}
+
+@media(min-aspect-ratio: 16/9){
     .back-video{
         width: 100%;
         height: auto;
     }
 }
 
-@media(max-aspect-ratio: 4/3){
+@media(max-aspect-ratio: 16/9){
     .back-video{
         width: auto;
         height: 100%;
