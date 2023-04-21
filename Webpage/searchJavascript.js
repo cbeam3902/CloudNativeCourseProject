@@ -61,7 +61,7 @@ function handleResponse(response) {
     console.log("Storyline = " + response.Storyline)
 
     // Boxart
-    const boxartImage = new Image(350,365);
+    const boxartImage = new Image(350,350);
     boxartImage.src = response.Boxart;
     let boxart = document.getElementById("boxart");
     boxart.append(boxartImage);
