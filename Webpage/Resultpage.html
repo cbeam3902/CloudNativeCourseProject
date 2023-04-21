@@ -8,51 +8,75 @@
         <link rel="stylesheet" href="css_sheets/resultPage.css">
     </head>
 
-    <header class="page-header">
-        <div class="container flow">
-            <h1 class="page-title">All Inclusive Game Info Website</h1>
-            <!--<p class="page-subtitle">You reached the result page!</p> -->
-        </div>
-    </header>
+    <body onload="webpage_load()">
 
-    <body class="border" onload="webpage_load()">
+        <div class="hero">
 
-        <h2 style="font-family: Garamond, serif "class="section-title center-text">You reached the result page!</h2>
-        
-        <h3 style="font-family: Garamond, serif" class="section-title center-text" id="test"></h3>
+            <div class="header">
 
-        <main style="background-color: bisque;" class="container">
+                <form action="./Homepage.html">
+                    <button onclick="action.webpage_load" type="submit"><img src="WebsiteDesignSources/house.jpg"></button>
+                    <h1>All Inclusive Game Info Website</h1>
+                    <div class="search">
+                        <form>
+                            <input id="searchbar" type="text" autocomplete="off" placeholder="Search Video Game" name="search">
+                            <button id="submitbutton" onclick="search_game()" type="button"><img src="WebsiteDesignSources/search.png"></button> 
+                        </form>
+                    </div>
 
-            <h2 class="section-title center-text" style="font-family: Garamond, serif" id="name"></h2>
-            <div align="center" id="boxart"></div>
-            <br></br>
-            <div align="justify" style="font-family: Garamond, serif; font-size: 1.375em; color: black;" class="container" id="storyline"></div>
-
-            <br></br>
-        </main>
-        
-        <div class="section-title">
-            <h2>Gameplay Videos:</h2>
-            <div class = "media-scroller snaps-inline">
-                <div class = "media-element" id="gameplay-1">                   
-                </div>
-    
-                <div class = "media-element" id="gameplay-2">
-                </div>
-    
-                <div class = "media-element" id="gameplay-3">
-                </div>
-    
-                <div class = "media-element" id="gameplay-4">
-                </div>
-    
-                <div class = "media-element" id="gameplay-5">
-                </div>
+                </form>
+                
             </div>
 
+
+
+
+            <img class="back-video" src="WebsiteDesignSources/mario-pixel-art.gif">
+
+            <div align="center" class="text-style-1" id="test"></div>
+
+            <main style="background-color: transparent; backdrop-filter: blur(4px) saturate(180%); border: 2px solid red;" class="container">
+
+                <div align="center" class="text-style-1" style="font-family: Garamond, serif" id="name"></div>
+                <div align="center" id="boxart"></div>
+                <br></br>
+                <div align="justify"  class="container text-style-3" id="storyline"></div>
+
+                <br></br>
+            </main>
+            
+            <div class="section-title" style="backdrop-filter: blur(4px) saturate(180%);">
+                <div class="text-style-1">Gameplay Videos:</div>
+                <div class = "media-scroller snaps-inline">
+                    <div class = "media-element" id="gameplay-1">                   
+                    </div>
+        
+                    <div class = "media-element" id="gameplay-2">
+                    </div>
+        
+                    <div class = "media-element" id="gameplay-3">
+                    </div>
+        
+                    <div class = "media-element" id="gameplay-4">
+                    </div>
+        
+                    <div class = "media-element" id="gameplay-5">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <script src="./searchJavascript.js"></script>
+            <script>            
+                var input = document.getElementById("searchbar");
+                input.addEventListener("keypress", function(event){
+                    if (event.key === "Enter"){
+                        event.preventDefault();
+                        document.getElementById("submitbutton").click();
+                    }
+                });
+            </script>
         </div>
-
-
-        <script src="./searchJavascript.js"></script>
     </body>
 </html>
