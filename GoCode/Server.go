@@ -127,7 +127,7 @@ func (sd *serverData) search(w http.ResponseWriter, req *http.Request) {
 		Test := []string{"id", "snippet"}
 		call := service.Search.List(Test).
 			Q(fmt.Sprintf("%s gameplay", gamearray[0].Name)).
-			MaxResults(5)
+			MaxResults(10)
 		ytresponse, err := call.Do(googleapi.QueryParameter("key", developerKey))
 		if err != nil {
 			log.Fatal(err.Error())

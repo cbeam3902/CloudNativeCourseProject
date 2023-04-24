@@ -53,12 +53,21 @@ var gameResponse;
 function handleResponse(response) {
     gameResponse = response;
     // Game Title
-    document.getElementById('name').innerHTML = response.Name;
+    if (Object.keys(response.Name).length != 0){
+        document.getElementById('name').innerHTML = response.Name;
+    } else {
+        document.getElementById('name').innerHTML = "Game Data Not Found In Database";
+    }  
     console.log("Name = " + response.Name)
 
     // Game Story
-    document.getElementById('storyline').innerHTML = response.Storyline;
+    if (Object.keys(response.Storyline).length != 0){
+        document.getElementById('storyline').innerHTML = response.Storyline;
+    } else {
+        document.getElementById('storyline').innerHTML = "Sorry! Storyline data was not found within the database!";
+    }   
     console.log("Storyline = " + response.Storyline)
+
 
     // Boxart
     const boxartImage = new Image(350,350);
@@ -79,7 +88,7 @@ function handleResponse(response) {
 }
 
 var player;
-const gameplayIDs = ['gameplay-1','gameplay-2','gameplay-3','gameplay-4','gameplay-5'];
+const gameplayIDs = ['gameplay-1','gameplay-2','gameplay-3','gameplay-4','gameplay-5','gameplay-6','gameplay-7','gameplay-8','gameplay-9','gameplay-10'];
 function onYouTubeIframeAPIReady() {
     for (let i = 0; i < gameplayIDs.length; i++){
         console.log(gameResponse.VideoId);
@@ -89,4 +98,8 @@ function onYouTubeIframeAPIReady() {
             videoId: gameResponse.VideoId[i]
         });
     }
+}
+
+function isEmptyObjectStoryline(response) {
+  return response.Storyline && Object.keys(response.Storyline).length === 0 && response.Storyline.constructor === Object;
 }
